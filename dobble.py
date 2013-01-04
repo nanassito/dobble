@@ -6,6 +6,7 @@
 """
 
 import argparse
+import os
 
 
 def list_symbols(source):
@@ -42,8 +43,14 @@ def parse_arguments():
 
 	args = parser.parse_args()
 
-	assert(args.source)
-	assert(args.output)
+	# assert that both directories exists.
+	assert args.source, "missing source directory"
+	assert args.output, "missing output directory"
+	assert os.path.exists(args.source), \
+			"source directory '%s' does not exists" % args.source
+	#FIXME: output directory does not need to exists
+	assert os.path.exists(args.output), \
+			"output directory '%s' does not exists" % args.output
 
 	return args.source, args.output
 
