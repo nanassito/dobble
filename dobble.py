@@ -8,6 +8,8 @@
 import argparse
 import os
 import random
+import cairo
+import rsvg
 
 
 def list_symbols(source):
@@ -34,15 +36,27 @@ def generate_cards(symbols):
 		for i in range(0, len(symbols), 8):
 			cards.append(symbols[i:i+8])
 
-	print cards
 	return cards
 
 
-def draw_cards(symbols):
+def draw_cards(symbols, target):
 	"""
 	Render the game as png files.
 	"""
-	return 1
+	# initialize the cairo renderer
+	img = cairo.ImageSurface(cairo.FORMAT_ARGB32, 1066, 1066)
+	ctx = cairo.Context(img)
+	index = 0
+
+	# get the template
+	with open("template.svg") as svg_file:
+		svg_data = svg_file.read()
+
+		for card in cards:
+			card_svg = svg_data % tuple(card)
+			handler = rsvg.Handle(None, card_svg)
+			handler.render_cairo(ctx)
+			img.write_to_png("%s/%s.png" % (target, index))
 
 
 def parse_arguments():
@@ -74,4 +88,4 @@ if __name__ == '__main__':
 	source, target = parse_arguments()
 	symbols = list_symbols(source)
 	cards = generate_cards(symbols)
-	draw_cards(cards)
+	draw_cards(cards, target)
