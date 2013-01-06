@@ -27,7 +27,7 @@ def generate_cards(symbols):
 		print "WARNING : For best result, you need between 20 and 30 different images."
 
 	cards = []
-	for j in range(8):
+	for j in range(8 * (55/len(symbols))):
 		# we shuffle the list and take element from it to be sure
 		# that we have the same number of instance of each image.
 		random.shuffle(symbols)
