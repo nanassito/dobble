@@ -7,20 +7,35 @@
 
 import argparse
 import os
+import random
 
 
 def list_symbols(source):
 	"""
 	List all symbols to use for the game
 	"""
-	return 1
+	return [ f for f in os.listdir(source) if f[0]!="." ]
 
 
 def generate_cards(symbols):
 	"""
 	Generate the list of cards.
 	"""
-	return 1
+	assert len(symbols)%8 == 0, "We need x*8 symbols."
+
+	if len(symbols) < 20 or len(symbols) > 30:
+		print "WARNING : For best result, you need between 20 and 30 different images."
+
+	cards = []
+	for j in range(8):
+		# we shuffle the list and take element from it to be sure
+		# that we have the same number of instance of each image.
+		random.shuffle(symbols)
+		for i in range(0, len(symbols), 8):
+			cards.append(symbols[i:i+8])
+
+	print cards
+	return cards
 
 
 def draw_cards(symbols):
